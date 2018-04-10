@@ -1,12 +1,15 @@
-import { State, DefaultState } from '../state';
+import { State, DefaultState, IndexedBoardGrid } from '../state';
 import { combineReducers } from 'redux';
 import {
   Actions,
   FLAG_ILLEGAL_MOVE,
   CLEAR_ILLEGAL_MOVE,
   ADD_CHECKER,
-  CHANGE_CURRENT_USER,
-  CHANGE_MATCH_STATE
+  CHANGE_CURRENT_PLAYER,
+  CHANGE_MATCH_STATE,
+  REGISTER_WINNING_SEQUENCE,
+  DECLARE_WINNER,
+  APPLY_BOARD_DIMENSIONS
 } from '../actions';
 
 export type Reducer<T extends keyof State> = (state: State[T], action: Actions) => State[T];
@@ -15,31 +18,46 @@ export const board: Reducer<'board'> = (state = DefaultState.board, action) => {
   switch (action.type) {
     case ADD_CHECKER: {
       const { columnId, userId } = action.payload;
-      const { boardHeight } = state.options;
+      const { gridHeight } = state.dimensions;
       const addedCheckerIndex = state.grid.findIndex((cell, index) => (
-        Math.floor(index / boardHeight) === columnId ? typeof cell === 'undefined' : false
+        Math.floor(index / gridHeight) === columnId ? typeof cell === 'undefined' : false
       ));
       if (addedCheckerIndex > -1) {
         return {
+          ...state,
           grid: state.grid.map((cell, index) => {
             if (index !== addedCheckerIndex) {
               return cell;
             }
             return userId;
-          }),
-          options: state.options
+          })
         }
       }
       return state;
+    }
+    case APPLY_BOARD_DIMENSIONS: {
+      const { gridHeight, gridWidth } = action.payload;
+      if (gridHeight < 4 || gridWidth < 4) {
+        return state;
+      }
+      const grid = Array(gridHeight * gridWidth).fill(undefined);
+      return {
+        ...state,
+        grid,
+        dimensions: {
+          gridHeight,
+          gridWidth
+        }
+      }
     }
     default:
       return state;
   }
 }
 
-export const currentUser: Reducer<'currentUser'> = (state = DefaultState.currentUser, action) => {
+export const currentPlayer: Reducer<'currentPlayer'> = (state = DefaultState.currentPlayer, action) => {
   switch (action.type) {
-    case CHANGE_CURRENT_USER: {
+    case CHANGE_CURRENT_PLAYER: {
       return action.payload.userId;
     }
     default:
@@ -53,6 +71,26 @@ export const match: Reducer<'match'> = (state = DefaultState.match, action) => {
       return {
         ...state,
         state: action.payload.matchState
+      }
+    }
+    case DECLARE_WINNER: {
+      return {
+        ...state,
+        winner: action.payload.userId
+      }
+    }
+    case REGISTER_WINNING_SEQUENCE: {
+
+      const { sequence, userId } = action.payload;
+      const winningSequence = sequence.reduce((acc: IndexedBoardGrid, cell) => {
+        if (acc.length >= 4) {
+          return acc;
+        }
+        return cell.value === userId ? acc.concat([cell]) : [];
+      }, []);
+      return {
+        ...state,
+        winningSequence
       }
     }
     default:
@@ -84,11 +122,19 @@ export const options: Reducer<'options'> = (state = DefaultState.options, action
   }
 }
 
+export const theme: Reducer<'theme'> = (state = DefaultState.theme, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}
+
 export const rootReducer = combineReducers({
   board,
-  currentUser,
+  currentPlayer,
   match,
   illegalMoves,
-  options
+  options,
+  theme
 })
 export default rootReducer;

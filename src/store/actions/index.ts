@@ -1,5 +1,5 @@
 import createAction from './create-action'
-import { UserId, State, MatchState } from '../state';
+import { UserId, State, MatchState, IndexedBoardGrid } from '../state';
 
 export const MAKE_A_MOVE = '[game/users epic] Make A Move'
 export const makeAMove = (columnId: number) =>
@@ -20,10 +20,10 @@ export const CLEAR_ILLEGAL_MOVE = '[game effect] Clear Illegal Move Flag'
 export const clearIllegalMove = () => createAction(CLEAR_ILLEGAL_MOVE);
 export type clearIllegalMove = ReturnType<typeof clearIllegalMove>;
 
-export const CHANGE_CURRENT_USER = '[users effect] Change Current User'
-export const changeCurrentUser = (userId: UserId) =>
-  createAction(CHANGE_CURRENT_USER, { userId });
-export type changeCurrentUser = ReturnType<typeof changeCurrentUser>;
+export const CHANGE_CURRENT_PLAYER = '[users effect] Change Current User'
+export const changeCurrentPlayer = (userId: UserId) =>
+  createAction(CHANGE_CURRENT_PLAYER, { userId });
+export type changeCurrentPlayer = ReturnType<typeof changeCurrentPlayer>;
 
 export const CHANGE_MATCH_STATE = '[game effect] Change Game State';
 export const changeMatchState = (matchState: MatchState) =>
@@ -36,40 +36,22 @@ export const declareWinner = (userId: UserId) =>
 export type declareWinner = ReturnType<typeof declareWinner>;
 
 export const REGISTER_WINNING_SEQUENCE = '[game effect] Winning Sequence';
-export const registerWinningSequence = (sequence: number[]) =>
-  createAction(REGISTER_WINNING_SEQUENCE, { sequence });
+export const registerWinningSequence = (userId: UserId, sequence: IndexedBoardGrid) =>
+  createAction(REGISTER_WINNING_SEQUENCE, { sequence, userId });
 export type registerWinningSequence = ReturnType<typeof registerWinningSequence>;
 
-// export const isMoveAllowed = (userId: UserId, columnId: number): AsyncAction => (
-//   async (dispatch, getState) => {
-//     const { grid, options } = getState().board;
-//     const column = grid.filter((_, index) => index % options.boardWidth === columnId)
-//     if (column.every(cell => typeof cell !== 'undefined')) {
-//       dispatch(flagIllegalMove(userId, columnId));
-//       return false;
-//     }
-//     const { illegalMoves } = getState();
-//     if (illegalMoves.length > 0) {
-//       dispatch(clearIllegalMove);
-//     }
-//     return true;
-//   }
-// );
+export const CHANGE_BOARD_DIMENSIONS = '[menu epic] Change Gameboard Dimensions';
+export const changeBoardDimensions = (gridWidth: number, gridHeight: number) =>
+  createAction(CHANGE_BOARD_DIMENSIONS, { gridWidth, gridHeight });
+export type changeBoardDimensions = ReturnType<typeof changeBoardDimensions>;
 
-// export const makeAMove = (userId: UserId, columnId: number): AsyncAction => (
-//   async (dispatch) => {
-//     try {
-//       if (await dispatch(isMoveAllowed(userId, columnId))) {
-//         dispatch(addUsersChecker(userId, columnId));
-//       }
-//     } catch (e) {
-//       console.warn(e);
-//     }
-//   }
-// );
+export const APPLY_BOARD_DIMENSIONS = '[menu effect] Apply Gameboard Dimensions';
+export const applyBoardDimensions = (gridWidth: number, gridHeight: number) =>
+  createAction(APPLY_BOARD_DIMENSIONS, { gridWidth, gridHeight });
+export type applyBoardDimensions = ReturnType<typeof applyBoardDimensions>;
 
 export const SET_OPTIONS = '[board][options] Set Options'
-export const setOptions = (options: Partial<State['board']['options']>) =>
+export const setOptions = (options: Partial<State['board']['dimensions']>) =>
   createAction(SET_OPTIONS, options);
 export type setOptions = ReturnType<typeof setOptions>;
 
@@ -79,7 +61,10 @@ export type Actions =
   | flagIllegalMove
   | clearIllegalMove
   | makeAMove
-  | changeCurrentUser
+  | changeCurrentPlayer
   | changeMatchState
   | declareWinner
   | registerWinningSequence
+  | changeBoardDimensions
+  | setOptions
+  | applyBoardDimensions

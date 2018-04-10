@@ -10,11 +10,24 @@ import {
   addUsersChecker,
   Actions,
   ADD_CHECKER,
-  changeCurrentUser,
+  changeCurrentPlayer,
   declareWinner,
   DECLARE_WINNER,
-  changeMatchState
+  changeMatchState,
+  registerWinningSequence,
+  CHANGE_BOARD_DIMENSIONS,
+  changeBoardDimensions,
+  applyBoardDimensions
 } from './actions';
+import {
+  extractColumnFromGrid,
+  getRowId,
+  isConsecutive,
+  extractRowFromGrid,
+  extractRisingDiagonal,
+  extractFallingDiagonal
+} from 'utils';
+
 import { State, MatchState } from './state';
 
 import 'rxjs/add/observable/of';
@@ -28,24 +41,24 @@ export const IllegalMoveEpic = (action$: ActionsObservable<Actions>, state: Stor
       return Observable.of();
     }
     const { columnId } = action.payload;
-    const { grid, options } = state.getState().board;
-    const { currentUser } = state.getState();
-    const column = grid.filter((_, index) => Math.floor(index / options.boardHeight) === columnId);
-    if (column.every(cell => typeof cell !== 'undefined')) {
-      return Observable.of(flagIllegalMove(currentUser, columnId));
+    const { grid, dimensions: { gridHeight } } = state.getState().board;
+    const { currentPlayer } = state.getState();
+    const column = extractColumnFromGrid(grid, gridHeight, columnId);
+    if (column.every(cell => typeof cell.value !== 'undefined')) {
+      return Observable.of(flagIllegalMove(currentPlayer, columnId));
     }
     const { illegalMoves } = state.getState();
     if (illegalMoves.length > 0) {
-      return Observable.from([clearIllegalMove(), addUsersChecker(currentUser, columnId)]);
+      return Observable.from([clearIllegalMove(), addUsersChecker(currentPlayer, columnId)]);
     }
-    return Observable.of(addUsersChecker(currentUser, columnId));
+    return Observable.of(addUsersChecker(currentPlayer, columnId));
   })
 )
 
 export const ChangeCurrentPlayerEpic = (action$: ActionsObservable<Actions>, state: Store<State>) => (
   action$.ofType(ADD_CHECKER).mergeMap((): Observable<Actions> => {
-    const { currentUser, options } = state.getState();
-    return Observable.of(changeCurrentUser((currentUser + 1) % options.players));
+    const { currentPlayer, options } = state.getState();
+    return Observable.of(changeCurrentPlayer((currentPlayer + 1) % options.players));
   })
 )
 
@@ -53,46 +66,43 @@ export const DetectWinnerEpic = (action$: ActionsObservable<Actions>, state: Sto
   action$.ofType(ADD_CHECKER).mergeMap((action: addUsersChecker): Observable<Actions> => {
 
     const { columnId, userId } = action.payload;
-    const { grid, options } = state.getState().board;
+    const { grid, dimensions: { gridHeight } } = state.getState().board;
 
-    const isConsecutive = (data: (number | undefined)[]) => (
-      (data.reduce((acc: number, cell) => {
-        return (acc >= 4 || cell === userId) ? acc + 1 : 0;
-      }, 0) || 0) >= 4
-    );
-    const column = grid.filter((_, index) => Math.floor(index / options.boardHeight) === columnId);
+    const column = extractColumnFromGrid(grid, gridHeight, columnId);
+    const latestInsertedCell = column.slice().reverse().find(({ value }) => typeof value !== 'undefined');
+    if (!latestInsertedCell) {
+      return Observable.of();
+    }
+    const { index: cellIndex } = latestInsertedCell;
 
-    const columnConsecutive = isConsecutive(column);
-    if (columnConsecutive) {
-      console.log(column);
-      return Observable.of(declareWinner(userId));
+    if (isConsecutive(userId, column)) {
+      return Observable.from([
+        declareWinner(userId), registerWinningSequence(userId, column)
+      ]);
     }
 
-    const rowId = column.lastIndexOf(userId);
-    const row = grid.filter((_, index) => index % options.boardHeight === rowId);
-    const rowConsecutive = isConsecutive(row);
-    if (rowConsecutive) {
-      console.log(row);
-      return Observable.of(declareWinner(userId));
+    const rowId = getRowId(cellIndex, gridHeight);
+    const row = extractRowFromGrid(grid, gridHeight, rowId);
+    if (isConsecutive(userId, row)) {
+      return Observable.from([
+        declareWinner(userId), registerWinningSequence(userId, row)
+      ]);
     }
 
-    const cellId = columnId * options.boardHeight + rowId;
-
-    const risingDiagonal = grid.filter((_, index) => index % options.boardWidth === cellId % options.boardWidth);
-    const risingDiagonalConsecutive = isConsecutive(risingDiagonal);
-    if (risingDiagonalConsecutive) {
-      console.log(risingDiagonal);
-      return Observable.of(declareWinner(userId));
+    const risingDiagonal = extractRisingDiagonal(grid, gridHeight, cellIndex);
+    if (isConsecutive(userId, risingDiagonal)) {
+      return Observable.from([
+        declareWinner(userId), registerWinningSequence(userId, risingDiagonal)
+      ]);
     }
 
-    const fallingDiagonal = grid.filter((_, index) => (
-      index % (options.boardHeight - 1) === cellId % (options.boardHeight - 1)
-    ));
-    const fallingDiagonalConsecutive = isConsecutive(fallingDiagonal);
-    if (fallingDiagonalConsecutive) {
-      console.log(fallingDiagonal);
-      return Observable.of(declareWinner(userId));
+    const fallingDiagonal = extractFallingDiagonal(grid, gridHeight, cellIndex);
+    if (isConsecutive(userId, fallingDiagonal)) {
+      return Observable.from([
+        declareWinner(userId), registerWinningSequence(userId, fallingDiagonal)
+      ]);
     }
+
     return Observable.of();
   })
 )
@@ -113,12 +123,24 @@ const DetectDrawEpic = (action$: ActionsObservable<Actions>, state: Store<State>
   })
 )
 
+const ChangeBoardDimensionsEpic = (action$: ActionsObservable<Actions>, state: Store<State>) => (
+  action$.ofType(CHANGE_BOARD_DIMENSIONS).mergeMap((action: changeBoardDimensions): Observable<Actions> => {
+    const { gridHeight, gridWidth } = action.payload;
+    const { match } = state.getState();
+    if (match.state !== MatchState.Menu || gridHeight < 4 || gridWidth < 4 || gridHeight >= 100 || gridHeight >= 100) {
+      return Observable.of();
+    }
+    return Observable.of(applyBoardDimensions(gridWidth, gridHeight));
+  })
+)
+
 export const RootEpic = combineEpics(
   IllegalMoveEpic,
   ChangeCurrentPlayerEpic,
   DetectWinnerEpic,
   DeclareWinnerEpic,
-  DetectDrawEpic
+  DetectDrawEpic,
+  ChangeBoardDimensionsEpic
 );
 
 export default RootEpic;

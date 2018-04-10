@@ -14,14 +14,14 @@ export type BoardProps = {
 const Board = (props: BoardProps) => {
 
   const { className } = props;
-  const { options, grid } = props.board;
-  const { boardHeight } = options;
+  const { dimensions, grid } = props.board;
+  const { gridHeight } = dimensions;
 
   return (
     <div className={className}>
       {grid
         .reduce((column: typeof grid[], cell, cellIndex) => {
-          const columnId = Math.floor(cellIndex / boardHeight);
+          const columnId = Math.floor(cellIndex / gridHeight);
           if (!column[columnId]) {
             column[columnId] = [cell];
           } else {
@@ -32,14 +32,11 @@ const Board = (props: BoardProps) => {
         .map((column, columnId) => (
           <CellColumn columnId={columnId} key={columnId}>
             {column.map((cell, cellId) => {
-              const gridIndex = columnId * boardHeight + cellId;
-              const rowId = cellId;
+              const gridIndex = columnId * gridHeight + cellId;
               return (
                 <Cell
                   value={grid[gridIndex]}
                   key={gridIndex}
-                  columnId={columnId}
-                  rowId={rowId}
                   gridIndex={gridIndex}
                 />
               );
@@ -54,12 +51,10 @@ const StyledBoard = styled(Board) `
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  min-width: ${props => props.board.options.boardWidth * 40}px;
+  /* min-width: ${props => props.board.dimensions.gridWidth * 4}rem; */
   overflow: hidden;
 `;
 
 export default connect(
-  (state: State) => ({
-    board: state.board
-  })
+  (state: State) => ({ board: state.board })
 )(StyledBoard)
