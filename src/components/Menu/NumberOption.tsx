@@ -10,6 +10,7 @@ export const NumberOptionButton = styled.button`
 export const NumberOptionWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   margin: 0 2rem;
 `;
@@ -20,18 +21,17 @@ export const NumberOptionLabel = styled.label`
 `;
 
 export type NumberOptionProps = {
-  value: number,
-  label: string,
-  className?: string,
-  minValue?: number,
-  maxValue?: number,
-  valueChanges?: (_: number) => void,
-  onIncrement?: () => void,
-  onDecrement?: () => void
-}
+  value: number;
+  label: string;
+  className?: string;
+  minValue?: number;
+  maxValue?: number;
+  valueChanges?: (_: number) => void;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
+};
 
 class NumberOption extends React.Component<NumberOptionProps> {
-
   increment = () => {
     const { valueChanges, onIncrement, value, maxValue = 4 } = this.props;
     if (value + 1 <= maxValue) {
@@ -40,7 +40,7 @@ class NumberOption extends React.Component<NumberOptionProps> {
       // tslint:disable-next-line:no-unused-expression
       onIncrement && onIncrement();
     }
-  }
+  };
 
   decrement = () => {
     const { valueChanges, onDecrement, value, minValue = 0 } = this.props;
@@ -50,38 +50,43 @@ class NumberOption extends React.Component<NumberOptionProps> {
       // tslint:disable-next-line:no-unused-expression
       onDecrement && onDecrement();
     }
-  }
+  };
 
   render() {
-
-    const {
-      className,
-      label,
-      value
-    } = this.props;
+    const { children, className, label, value } = this.props;
 
     return (
       <NumberOptionWrapper>
-        <NumberOptionLabel>
-          {label}
-        </NumberOptionLabel>
+        <NumberOptionLabel>{label}</NumberOptionLabel>
         <div className={className}>
-          <NumberOptionButton onClick={this.increment} aria-label={`Decrement ${label}`}>
+          <NumberOptionButton
+            onClick={this.increment}
+            aria-label={`Decrement ${label}`}
+          >
             ⬆
           </NumberOptionButton>
-          <span style={{ textAlign: 'center' }}>
-            {value}
-          </span>
-          <NumberOptionButton onClick={this.decrement} aria-label={`Increment ${label}`}>
+          {children ? (
+            children
+          ) : (
+            <span style={{ textAlign: 'center' }}>{value}</span>
+          )}
+          <NumberOptionButton
+            onClick={this.decrement}
+            aria-label={`Increment ${label}`}
+          >
             ⬇
           </NumberOptionButton>
         </div>
       </NumberOptionWrapper>
-    )
+    );
   }
 }
 
-export default styled(NumberOption) `
+/**
+ * Simulation of a number selection column...
+ */
+export default styled(NumberOption)`
   display: flex;
-  flex-direction: column
-`
+  flex-direction: column;
+  align-items: center;
+`;

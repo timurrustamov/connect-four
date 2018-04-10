@@ -1,8 +1,10 @@
+import themes from '../utils/themes';
+
 export type UserId = number;
-export type BoardGrid = (UserId | undefined)[];
+export type BoardGrid = (UserId | null)[];
 export type IndexedBoardGrid = {
-  index: number,
-  value: UserId | undefined
+  index: number;
+  value: UserId | null;
 }[];
 
 export enum MatchState {
@@ -13,13 +15,14 @@ export enum MatchState {
 }
 
 export type Theme = {
-  boardBackgroundColor: React.CSSProperties['backgroundColor'],
-  boardBackgroundShadowColor: React.CSSProperties['color'],
-  boardHolesColor: React.CSSProperties['backgroundColor'],
-  boardHolesShadowColor: React.CSSProperties['color'],
-  boardHolesOnHoverColor: React.CSSProperties['backgroundColor'],
-  playerColors: React.CSSProperties['backgroundColor'][]
-}
+  id: number;
+  boardBackgroundColor: React.CSSProperties['backgroundColor'];
+  boardBackgroundShadowColor: React.CSSProperties['color'];
+  boardHolesColor: React.CSSProperties['backgroundColor'];
+  boardHolesShadowColor: React.CSSProperties['color'];
+  boardHolesOnHoverColor: React.CSSProperties['backgroundColor'];
+  playerColors: React.CSSProperties['backgroundColor'][];
+};
 
 export type State = {
   /**
@@ -31,19 +34,19 @@ export type State = {
      * This 1D array describes current grid with indexes as cell indexes
      * and its value is a User Id or `undefined`
      */
-    grid: BoardGrid,
+    grid: BoardGrid;
     /**
      * Desribes current dimensions of the game board grid.
      */
     dimensions: {
-      gridHeight: number,
-      gridWidth: number
-    }
-  },
+      gridHeight: number;
+      gridWidth: number;
+    };
+  };
   /**
    * Current players ID.
    */
-  currentPlayer: UserId,
+  currentPlayer: UserId;
   /**
    * Describes current match state.
    */
@@ -51,24 +54,24 @@ export type State = {
     /**
      * Match state (is actually the app state)
      */
-    state: MatchState,
+    state: MatchState;
     /**
      * Latest winner of the match
      */
-    winner?: UserId,
+    winner?: UserId;
     /**
      * Grid sequence that caused victory
      */
-    winningSequence: IndexedBoardGrid
-  },
+    winningSequence: IndexedBoardGrid;
+  };
   /**
    * Additional information enforcing game rules
    * _Currently unused_
    */
   illegalMoves: {
-    columnId: number,
-    userId: number
-  }[],
+    columnId: number;
+    userId: number;
+  }[];
   /**
    * Match options
    */
@@ -77,14 +80,14 @@ export type State = {
      * Number of players in current match
      * (this should not excede 4 or you must add player colors to the theme)
      */
-    players: number
-  },
-  theme: Theme
+    players: number;
+  };
+  theme: Theme;
 };
 
-export const createState = (gridWidth = 10, gridHeight = 4): State => ({
+export const createState = (gridWidth = 7, gridHeight = 6): State => ({
   board: {
-    grid: Array(gridHeight * gridWidth).fill(undefined),
+    grid: Array(gridHeight * gridWidth).fill(null),
     dimensions: {
       gridHeight,
       gridWidth
@@ -100,17 +103,8 @@ export const createState = (gridWidth = 10, gridHeight = 4): State => ({
     players: 2
   },
   theme: {
-    boardBackgroundColor: '#326FC8',
-    boardBackgroundShadowColor: '#333',
-    boardHolesColor: 'transparent',
-    boardHolesOnHoverColor: '#eee',
-    boardHolesShadowColor: '#333',
-    playerColors: [
-      'red',
-      'blue',
-      'palevioletred',
-      'green'
-    ]
+    id: 0,
+    ...themes[0]
   }
 });
 

@@ -1,18 +1,24 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
+import 'typeface-roboto';
+import BackButton from './components/BackButton';
+import Game from './components/Game';
+import Menu from './components/Menu';
+import Root from './components/Root';
+import ScoreBoard from './components/ScoreBoard';
+import Store from './store';
 
-import Store from '@connect-four/store';
-
-import Root from '@connect-four/components/Root';
-import Game from '@connect-four/components/Game';
-import Menu from '@connect-four/components/Menu';
-
+/**
+ * Application main component
+ */
 class App extends React.Component {
   render() {
     return (
       <Provider store={Store}>
         <Root>
           <Menu />
+          <BackButton />
+          <ScoreBoard />
           <Game />
         </Root>
       </Provider>

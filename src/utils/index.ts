@@ -6,10 +6,17 @@ import { BoardGrid, IndexedBoardGrid } from 'store/state';
  * @param grid A part of gameboard grid (must be a column, a row, or a diagonal)
  * @param consecutiveNo Number of consecutive matches for vicory!!
  */
-export function isConsecutive(userId: number, grid: BoardGrid | IndexedBoardGrid, consecutiveNo: number = 4) {
-
+export function isConsecutive(
+  userId: number,
+  grid: BoardGrid | IndexedBoardGrid,
+  consecutiveNo: number = 4
+) {
   if (consecutiveNo <= 0) {
-    throw new Error(`${isConsecutive.name}: Invalid number of consecutive elements ${consecutiveNo}`);
+    throw new Error(
+      `${
+        isConsecutive.name
+      }: Invalid number of consecutive elements ${consecutiveNo}`
+    );
   }
   if (grid.length <= 0) {
     return false;
@@ -17,10 +24,26 @@ export function isConsecutive(userId: number, grid: BoardGrid | IndexedBoardGrid
   if (typeof grid[0] === 'object') {
     grid = (grid as IndexedBoardGrid).map(({ value }) => value);
   }
-  return ((grid as BoardGrid).reduce((acc: number, cell) => {
-    return (acc >= consecutiveNo || cell === userId) ? acc + 1 : 0;
-  }, 0) || 0) >= consecutiveNo;
-};
+  return (
+    ((grid as BoardGrid).reduce((acc: number, cell) => {
+      return acc >= consecutiveNo || cell === userId ? acc + 1 : 0;
+    }, 0) || 0) >= consecutiveNo
+  );
+}
+
+/**
+ * Returns first index (relative to the grid) of a free cell
+ * @param grid A part of gameboard grid
+ * @returns
+ */
+export function getFirstAvailableCellInGrid(
+  grid: BoardGrid | IndexedBoardGrid
+) {
+  if (typeof grid[0] === 'object') {
+    grid = (grid as IndexedBoardGrid).map(({ value }) => value);
+  }
+  return (grid as BoardGrid).findIndex(cell => cell === null);
+}
 
 /**
  * This function is a tiny (arguably useless) wrap to get a cells index in a grid
@@ -45,7 +68,11 @@ export function getRowId(index: number, gridHeight: number) {
  * @param gridHeight Game grids height
  * @param columnId Id of the column to be extracted
  */
-export function extractColumnFromGrid(grid: BoardGrid, gridHeight: number, columnId: number): IndexedBoardGrid {
+export function extractColumnFromGrid(
+  grid: BoardGrid,
+  gridHeight: number,
+  columnId: number
+): IndexedBoardGrid {
   return grid
     .map((value, index) => ({ value, index }))
     .filter((_, index) => getColumnId(index, gridHeight) === columnId);
@@ -56,7 +83,11 @@ export function extractColumnFromGrid(grid: BoardGrid, gridHeight: number, colum
  * @param gridHeight Game grids height
  * @param rowId Id of the column to be extracted
  */
-export function extractRowFromGrid(grid: BoardGrid, gridHeight: number, rowId: number): IndexedBoardGrid {
+export function extractRowFromGrid(
+  grid: BoardGrid,
+  gridHeight: number,
+  rowId: number
+): IndexedBoardGrid {
   return grid
     .map((value, index) => ({ value, index }))
     .filter((_, index) => getRowId(index, gridHeight) === rowId);
@@ -68,10 +99,16 @@ export function extractRowFromGrid(grid: BoardGrid, gridHeight: number, rowId: n
  * @param gridHeight Game grids height
  * @param cellIndex A cell index from the diagonal to be extracted
  */
-export function extractRisingDiagonal(grid: BoardGrid, gridHeight: number, cellIndex: number): IndexedBoardGrid {
+export function extractRisingDiagonal(
+  grid: BoardGrid,
+  gridHeight: number,
+  cellIndex: number
+): IndexedBoardGrid {
   return grid
     .map((value, index) => ({ value, index }))
-    .filter((_, index) => index % (gridHeight + 1) === cellIndex % (gridHeight + 1))
+    .filter(
+      (_, index) => index % (gridHeight + 1) === cellIndex % (gridHeight + 1)
+    )
     .filter(({ index }) => {
       const cellColumnId = getColumnId(cellIndex, gridHeight);
       const cellRowId = getRowId(cellIndex, gridHeight);
@@ -87,20 +124,30 @@ export function extractRisingDiagonal(grid: BoardGrid, gridHeight: number, cellI
  * @param gridHeight Game grids height
  * @param cellIndex A cell index from the diagonal to be extracted
  */
-export function extractFallingDiagonal(grid: BoardGrid, gridHeight: number, cellIndex: number): IndexedBoardGrid {
+export function extractFallingDiagonal(
+  grid: BoardGrid,
+  gridHeight: number,
+  cellIndex: number
+): IndexedBoardGrid {
   return grid
     .map((value, index) => ({ value, index }))
-    .filter((_, index) => index % (gridHeight - 1) === cellIndex % (gridHeight - 1))
+    .filter(
+      (_, index) => index % (gridHeight - 1) === cellIndex % (gridHeight - 1)
+    )
     .filter(({ index }) => {
       const cellColumnId = getColumnId(cellIndex, gridHeight);
       const cellRowId = getRowId(cellIndex, gridHeight);
       const columnId = getColumnId(index, gridHeight);
       const rowId = getRowId(index, gridHeight);
       return rowId + columnId === cellRowId + cellColumnId;
-    })
+    });
 }
 
-export let _logEverythingAboutACell: (grid: BoardGrid, gridHeight: number, cellIndex: number) => void;
+export let _logEverythingAboutACell: (
+  grid: BoardGrid,
+  gridHeight: number,
+  cellIndex: number
+) => void;
 if (process.env.NODE_ENV === 'development') {
   (() => {
     _logEverythingAboutACell = (grid, gridHeight, cellIndex) => {
@@ -108,14 +155,18 @@ if (process.env.NODE_ENV === 'development') {
       const rowId = getRowId(cellIndex, gridHeight);
       console.log(
         `For cell ${cellIndex} (${rowId}, ${columnId}):\n`,
-        '\nColumn:', extractColumnFromGrid(grid, gridHeight, columnId),
-        '\nRow:', extractRowFromGrid(grid, gridHeight, rowId),
-        '\nRising diagonal:', extractRisingDiagonal(grid, gridHeight, cellIndex),
-        '\nFalling diagonal:', extractFallingDiagonal(grid, gridHeight, cellIndex)
+        '\nColumn:',
+        extractColumnFromGrid(grid, gridHeight, columnId),
+        '\nRow:',
+        extractRowFromGrid(grid, gridHeight, rowId),
+        '\nRising diagonal:',
+        extractRisingDiagonal(grid, gridHeight, cellIndex),
+        '\nFalling diagonal:',
+        extractFallingDiagonal(grid, gridHeight, cellIndex)
       );
-    }
+    };
   })();
 } else {
   // tslint:disable-next-line:no-empty
-  _logEverythingAboutACell = () => { };
+  _logEverythingAboutACell = () => {};
 }

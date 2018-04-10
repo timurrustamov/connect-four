@@ -1,41 +1,57 @@
 import * as React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
-
-import CellContents from './CellContents'
-
-import { makeAMove } from '@connect-four/store/actions';
+import { makeAMove } from '../../store/actions';
+import { MatchState, State, UserId } from '../../store/state';
+import CellContents from './CellContents';
 import Checker from './Checker';
-import { State, UserId } from 'store/state';
 
 type CellProps = {
-  makeAMove: typeof makeAMove,
-  gridIndex: number,
-  value?: UserId,
-  className?: string,
-  withinWinningSequence: boolean,
-  backgroundColor: string
-}
+  makeAMove: typeof makeAMove;
+  gridIndex: number;
+  value: UserId | null;
+  className?: string;
+  withinWinningSequence: boolean;
+  backgroundColor: string;
+  preview?: boolean;
+  currentPlayer: UserId;
+  isInGame: boolean;
+};
 
 const Cell = (props: CellProps) => {
+  const {
+    className,
+    value,
+    withinWinningSequence,
+    preview,
+    currentPlayer,
+    isInGame
+  } = props;
 
   return (
-    <div className={props.className}>
+    <div className={className}>
       <CellContents>
-        {typeof props.value !== 'undefined' ?
-          <Checker
-            withinWinningSequence={props.withinWinningSequence}
-            userId={props.value}
-          />
-          : undefined
-        }
+        {(() => {
+          if (value !== null) {
+            return (
+              <Checker
+                withinWinningSequence={withinWinningSequence}
+                userId={value}
+              />
+            );
+          }
+          if (preview && isInGame) {
+            return <Checker preview={preview} userId={currentPlayer} />;
+          }
+          return null;
+        })()}
       </CellContents>
     </div>
-  )
-}
+  );
+};
 
-export const StyledCell = styled(Cell) `
+export const StyledCell = styled(Cell)`
   display: inline-block;
   position: relative;
   border: 0.2rem solid ${props => props.backgroundColor};
@@ -48,15 +64,21 @@ export const StyledCell = styled(Cell) `
   }
 `;
 
+/**
+ * A single Cell, wrapper to the players Checker (alias CellContents)
+ */
 export default connect(
   (state: State, ownProps: Partial<CellProps>) => ({
-    withinWinningSequence: (
+    withinWinningSequence:
       state.match.winningSequence &&
-      !!state.match.winningSequence.find(cell => cell.index === ownProps.gridIndex)
-    ),
-    backgroundColor: state.theme.boardBackgroundColor
+      !!state.match.winningSequence.find(
+        cell => cell.index === ownProps.gridIndex
+      ),
+    backgroundColor: state.theme.boardBackgroundColor,
+    currentPlayer: state.currentPlayer,
+    isInGame: state.match.state === MatchState.InGame
   }),
-  (dispatch) => ({
+  dispatch => ({
     makeAMove: bindActionCreators(makeAMove, dispatch)
   })
-)(StyledCell)
+)(StyledCell);
