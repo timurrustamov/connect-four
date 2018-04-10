@@ -26,13 +26,19 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0",
+    "@types/enzyme": "^3.1.9",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.2.2",
     "@types/node": "^9.6.2",
     "@types/react": "^16.3.5",
     "@types/react-dom": "^16.0.4",
     "@types/react-redux": "^5.0.15",
+    "@types/react-test-renderer": "^16.0.1",
     "@types/redux-localstorage": "^1.0.8",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "gh-pages": "^1.1.0",
+    "react-test-renderer": "^16.3.1",
     "typescript": "^2.8"
   }
 }

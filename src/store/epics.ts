@@ -37,7 +37,7 @@ import { MatchState, State } from './state';
  * @param action$ Stream of actions
  * @param state Current state
  */
-export const IllegalMoveEpic = (
+export const MoveEpic = (
   action$: ActionsObservable<Actions>,
   state: Store<State>
 ) =>
@@ -51,7 +51,6 @@ export const IllegalMoveEpic = (
     const { grid, dimensions: { gridHeight } } = state.getState().board;
     const { currentPlayer } = state.getState();
     const column = extractColumnFromGrid(grid, gridHeight, columnId);
-    console.log(column);
     if (column.every(cell => cell.value !== null)) {
       return Observable.of(flagIllegalMove(currentPlayer, columnId));
     }
@@ -220,7 +219,7 @@ const ReinitializeGameBoard = (
  * The main epic for connect-four project!
  */
 export const RootEpic = combineEpics(
-  IllegalMoveEpic,
+  MoveEpic,
   ChangeCurrentPlayerEpic,
   DetectWinnerEpic,
   DeclareWinnerEpic,

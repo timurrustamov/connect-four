@@ -1,0 +1,548 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match snapshot 1`] = `
+<div
+  className="sc-cSHVUG inFGiL"
+>
+  <div
+    className="sc-jTzLTM hiRaYu"
+  >
+    <div
+      className="sc-jzJRlG kpQEIn sc-htoDjs biMMWm"
+    >
+      <div
+        className="sc-fjdhpX biqhvJ"
+        style={
+          Object {
+            "flex": 1.5,
+          }
+        }
+      >
+        <h1
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Connect-four!
+        </h1>
+      </div>
+      <div
+        className="sc-fjdhpX biqhvJ"
+        style={
+          Object {
+            "flex": 1.5,
+          }
+        }
+      >
+        <div
+          className="sc-iwsKbI cUXIRI"
+        >
+          <label
+            className="sc-gZMcBi iwYXDQ"
+          >
+            Width
+          </label>
+          <div
+            className="sc-gqjmRU bevNeV"
+          >
+            <button
+              aria-label="Decrement Width"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬆
+            </button>
+            <span
+              style={
+                Object {
+                  "textAlign": "center",
+                }
+              }
+            >
+              7
+            </span>
+            <button
+              aria-label="Increment Width"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬇
+            </button>
+          </div>
+        </div>
+        <div
+          className="sc-iwsKbI cUXIRI"
+        >
+          <label
+            className="sc-gZMcBi iwYXDQ"
+          >
+            Height
+          </label>
+          <div
+            className="sc-gqjmRU bevNeV"
+          >
+            <button
+              aria-label="Decrement Height"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬆
+            </button>
+            <span
+              style={
+                Object {
+                  "textAlign": "center",
+                }
+              }
+            >
+              6
+            </span>
+            <button
+              aria-label="Increment Height"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬇
+            </button>
+          </div>
+        </div>
+        <div
+          className="sc-iwsKbI cUXIRI"
+        >
+          <label
+            className="sc-gZMcBi iwYXDQ"
+          >
+            Players
+          </label>
+          <div
+            className="sc-gqjmRU bevNeV"
+          >
+            <button
+              aria-label="Decrement Players"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬆
+            </button>
+            <span
+              style={
+                Object {
+                  "textAlign": "center",
+                }
+              }
+            >
+              2
+            </span>
+            <button
+              aria-label="Increment Players"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬇
+            </button>
+          </div>
+        </div>
+        <div
+          className="sc-iwsKbI cUXIRI"
+        >
+          <label
+            className="sc-gZMcBi iwYXDQ"
+          >
+            Theme
+          </label>
+          <div
+            className="sc-gqjmRU bevNeV"
+          >
+            <button
+              aria-label="Decrement Theme"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬆
+            </button>
+            <span
+              style={
+                Object {
+                  "textAlign": "center",
+                }
+              }
+            >
+              1
+            </span>
+            <button
+              aria-label="Increment Theme"
+              className="sc-dnqmqq QsUkQ"
+              onClick={[Function]}
+            >
+              ⬇
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-fjdhpX biqhvJ"
+      >
+        <button
+          className="sc-VigVT jjBymZ"
+          onClick={[Function]}
+        >
+          Start Game!
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="sc-gzVnrw AqnRN"
+  >
+    <div
+      className="sc-bZQynM ckJnDK"
+    >
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+      <div
+        className="sc-EHOje bQYtny"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+        <div
+          className="sc-ifAKCX fduazu"
+        >
+          <div
+            className="sc-htpNat gKrWtC"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
