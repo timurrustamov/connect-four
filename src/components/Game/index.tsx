@@ -29,7 +29,7 @@ const StyledRoot = styled(Root)`
   border-radius: 10%;
   box-shadow: 25px 17px 44px -15px ${props => props.shadowColor};
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
   max-width: 720px;
   margin: 5% auto 5% auto;
   filter: ${props => (props.isInGame ? '' : 'blur(5px)')};
